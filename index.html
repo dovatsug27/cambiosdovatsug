@@ -2,205 +2,451 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cambios Dovatsug | Portal de Pagos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dovatsug Global | Pagos Seguros</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #0044cc; /* Azul Dovatsug */
-            --secondary-color: #002a80; /* Azul Oscuro */
-            --accent-color: #ffffff;
-            --bg-color: #f4f6f8;
-            --text-color: #333333;
+            --primary: #003366; /* Azul serio */
+            --secondary: #0056b3; /* Azul vibrante */
+            --accent: #FFD700; /* Dorado para Cripto/VIP */
+            --bg: #f4f6f8;
+            --text: #2c3e50;
+            --success: #28a745;
         }
 
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        
-        /* ENCABEZADO TIPO APP */
-        header { background: linear-gradient(135deg, var(--secondary-color), var(--primary-color)); width: 100%; padding: 30px 20px; text-align: center; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
-        h1 { margin: 0; font-weight: 300; letter-spacing: 1px; font-size: 28px; }
-        h1 strong { font-weight: 700; }
-        .subtitle { font-size: 14px; opacity: 0.9; margin-top: 5px; letter-spacing: 2px; text-transform: uppercase; }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* SPLASH SCREEN (Pantalla de Carga) */
+        #splash {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        #splash img { width: 100px; height: 100px; border-radius: 50%; background: white; padding: 10px; margin-bottom: 20px; }
+        #splash h2 { color: white; font-weight: 300; letter-spacing: 2px; }
+
+        /* HEADER */
+        header {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo-container img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+        header h1 { margin: 10px 0 0; font-size: 1.2rem; color: var(--primary); font-weight: 700; }
+        .verified-badge { font-size: 0.8rem; color: var(--success); background: #e8f5e9; padding: 3px 8px; border-radius: 12px; display: inline-block; margin-top: 5px; }
+
+        /* TABS DE NAVEGACIÓN */
+        .tabs {
+            display: flex;
+            overflow-x: auto;
+            background: white;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            scrollbar-width: none; /* Firefox */
+        }
+        .tabs::-webkit-scrollbar { display: none; } /* Chrome */
+        .tab-btn {
+            border: none;
+            background: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .tab-btn.active { color: var(--primary); border-bottom: 2px solid var(--primary); }
 
         /* CONTENEDOR PRINCIPAL */
-        .container { width: 90%; max-width: 500px; margin-top: -20px; padding-bottom: 80px; }
+        .main-container { padding: 20px; max-width: 600px; margin: auto; padding-bottom: 80px;}
 
-        /* TARJETAS DE MENÚ */
-        .menu-btn { 
-            background-color: white; 
-            color: var(--secondary-color); 
-            border: none; 
-            width: 100%; 
-            padding: 18px 20px; 
-            margin-bottom: 15px; 
-            border-radius: 12px; 
-            font-size: 16px; 
-            font-weight: 600; 
-            text-align: left; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-            cursor: pointer; 
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .menu-btn:active { transform: scale(0.98); }
-        .menu-btn span { font-size: 20px; }
-
-        /* TARJETA DE DATOS (DESTACADA) */
-        .data-card {
-            background: #fff;
-            border-left: 5px solid var(--primary-color);
+        /* TARJETAS DE PAGO */
+        .card {
+            background: white;
+            border-radius: 16px;
             padding: 20px;
-            border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border-left: 5px solid var(--primary);
+            transition: transform 0.2s;
         }
-        .data-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
-        .data-label { color: #666; }
-        .data-value { font-weight: bold; color: #000; text-align: right; }
-
-        /* SECCIONES OCULTAS */
-        .content-section { display: none; animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* CAJA DE GUIONES */
-        .script-box { background-color: #eef2f7; padding: 15px; border-radius: 8px; font-size: 13px; color: #444; border: 1px solid #dbe2e8; white-space: pre-wrap; line-height: 1.5; margin: 10px 0; }
+        .card:active { transform: scale(0.98); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .card-header h3 { margin: 0; font-size: 1.1rem; color: var(--primary); display: flex; align-items: center; gap: 8px; }
         
-        /* BOTONES DE ACCIÓN */
-        .btn-action { width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 14px; }
-        .btn-copy { background-color: var(--primary-color); color: white; }
-        .btn-back { background-color: #ddd; color: #444; margin-top: 15px; }
-
-        /* BOTÓN FLOTANTE WHATSAPP */
-        .whatsapp-float {
-            position: fixed; bottom: 20px; right: 20px;
-            background-color: #25D366; color: white;
-            width: 60px; height: 60px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 30px; text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 100; transition: transform 0.3s;
+        /* DATA ROWS (Dato + Botón Copiar) */
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
         }
-        .whatsapp-float:hover { transform: scale(1.1); }
+        .data-label { font-size: 0.75rem; color: #6c757d; display: block; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .data-value { font-size: 0.95rem; font-weight: 600; color: #2c3e50; word-break: break-all; }
+        
+        .copy-btn {
+            background: white;
+            border: 1px solid #dee2e6;
+            color: var(--secondary);
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-left: 10px;
+            min-width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .copy-btn:active { background: var(--secondary); color: white; }
 
+        /* INSTRUCTIVO (ACORDEÓN) */
+        .instruction-box {
+            background: #fff8e1;
+            border: 1px solid #ffe0b2;
+            border-radius: 8px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        .instruction-header {
+            padding: 10px 15px;
+            background: #ffecb3;
+            color: #8d6e63;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .instruction-content {
+            padding: 15px;
+            font-size: 0.85rem;
+            color: #5d4037;
+            display: none; /* Oculto por defecto */
+        }
+        .instruction-content ol { padding-left: 20px; margin: 0; }
+        .instruction-content li { margin-bottom: 8px; }
+
+        /* TOAST NOTIFICATION */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* UTILS */
+        .hidden { display: none; }
+        .warning-text { font-size: 0.75rem; color: #d93025; margin-top: 5px; font-weight: 600; display: block;}
     </style>
 </head>
 <body>
 
+    <div id="splash">
+        <img src="https://cdn-icons-png.flaticon.com/512/2534/2534204.png" alt="Logo">
+        <h2>DOVATSUG GLOBAL</h2>
+        <p style="color:white; font-size:0.8rem; margin-top:5px;">Cargando sistema seguro...</p>
+    </div>
+
+    <div id="toast"><i class="fas fa-check-circle"></i> ¡Dato copiado al portapapeles!</div>
+
     <header>
-        <h1>Cambios <strong>Dovatsug</strong></h1>
-        <div class="subtitle">Diversidad en Plataformas</div>
+        <div class="logo-container">
+            <img src="https://cdn-icons-png.flaticon.com/512/2534/2534204.png" alt="Logo Dovatsug">
+        </div>
+        <h1>Dovatsug Global</h1>
+        <div class="verified-badge"><i class="fas fa-shield-alt"></i> Casa de Cambio Verificada</div>
     </header>
 
-    <div class="container">
-        
-        <p style="margin-top: 30px; font-weight: bold; color: #666; font-size: 14px;">MIS DATOS BANCARIOS (USA)</p>
-        <div class="data-card">
-            <div class="data-row"><span class="data-label">Banco:</span> <span class="data-value">Lead Bank</span></div>
-            <div class="data-row"><span class="data-label">Ruta (ACH):</span> <span class="data-value" id="routing">101019644</span></div>
-            <div class="data-row"><span class="data-label">Cuenta:</span> <span class="data-value" id="account">211152102631</span></div>
-            <div class="data-row"><span class="data-label">Beneficiario:</span> <span class="data-value">David Rodríguez</span></div>
-            <div class="data-row"><span class="data-label">Tipo:</span> <span class="data-value">Corriente (Checking)</span></div>
-            <button class="btn-action btn-copy" onclick="copyData()">Copiar Datos Rápidos</button>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'colombia')">🇨🇴 Colombia</button>
+        <button class="tab-btn" onclick="openTab(event, 'venezuela')">🇻🇪 Venezuela</button>
+        <button class="tab-btn" onclick="openTab(event, 'usa')">🇺🇸 USA / Int.</button>
+        <button class="tab-btn" onclick="openTab(event, 'cripto')">🪙 Cripto</button>
+    </div>
+
+    <div class="main-container">
+
+        <div id="colombia" class="tab-content">
+            <div class="card" style="border-left-color: #820ad1;">
+                <div class="card-header">
+                    <h3><i class="fas fa-bolt" style="color: #820ad1;"></i> NuBank</h3>
+                    <small style="color:#820ad1; font-weight:bold;">Inmediato</small>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Cuenta de Ahorros</span>
+                        <span class="data-value" id="nu-account">PON_AQUI_TU_NUMERO_NU</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('nu-account')"><i class="far fa-copy"></i></button>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Titular</span>
+                        <span class="data-value">David Rodriguez</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color: #FDDA24;">
+                <div class="card-header">
+                    <h3><i class="fas fa-university" style="color: #FDDA24;"></i> Bancolombia</h3>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Cuenta de Ahorros</span>
+                        <span class="data-value" id="banco-account">824-000084-87</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('banco-account')"><i class="far fa-copy"></i></button>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Titular</span>
+                        <span class="data-value">David Rodriguez</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <p style="font-weight: bold; color: #666; font-size: 14px;">GUÍAS PARA EL CLIENTE</p>
+        <div id="venezuela" class="tab-content hidden">
+            <div class="card" style="border-left-color: #bd0f0f;">
+                <div class="card-header">
+                    <h3><i class="fas fa-mobile-alt" style="color: #bd0f0f;"></i> Pago Móvil</h3>
+                    <small>BDV (0102)</small>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Teléfono</span>
+                        <span class="data-value" id="pm-phone">04124285616</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('pm-phone')"><i class="far fa-copy"></i></button>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Cédula (C.I.)</span>
+                        <span class="data-value" id="pm-id">16233766</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('pm-id')"><i class="far fa-copy"></i></button>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Banco</span>
+                        <span class="data-value">Banco de Venezuela (0102)</span>
+                    </div>
+                </div>
+            </div>
 
-        <div id="main-menu">
-            <button class="menu-btn" onclick="showSection('chase')">🏦 Chase Bank <span>›</span></button>
-            <button class="menu-btn" onclick="showSection('boa')">🏛️ Bank of America <span>›</span></button>
-            <button class="menu-btn" onclick="showSection('wells')">🐎 Wells Fargo <span>›</span></button>
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-money-bill-wave"></i> Cuenta Corriente</h3>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Número de Cuenta</span>
+                        <span class="data-value" id="bdv-account" style="font-size: 0.85rem;">01020380560000026000</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('bdv-account')"><i class="far fa-copy"></i></button>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Titular</span>
+                        <span class="data-value">David Rodriguez</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div id="chase" class="content-section">
-            <h3 style="color:var(--primary-color)">Guía Chase Bank</h3>
-            <p style="font-size:13px; color:#666">Envía esto a tu cliente para que te agregue sin errores.</p>
-            <div class="script-box" id="script-chase">Hola! Para ahorrarte comisiones, agrégame así en tu App de Chase:
+        <div id="usa" class="tab-content hidden">
+            <div class="card" style="border-left-color: #00d2ff;">
+                <div class="card-header">
+                    <h3><i class="fas fa-flag-usa" style="color: #00d2ff;"></i> USA (ACH)</h3>
+                    <small>Dolar App / Lead Bank</small>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Número de Cuenta</span>
+                        <span class="data-value" id="usa-account">2631</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('usa-account')"><i class="far fa-copy"></i></button>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Routing Number</span>
+                        <span class="data-value" id="usa-routing">REVISAR_EN_APP</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('usa-routing')"><i class="far fa-copy"></i></button>
+                </div>
+                
+                <div class="instruction-box">
+                    <div class="instruction-header" onclick="toggleInstruction('inst-usa')">
+                        <span><i class="fas fa-info-circle"></i> ¿Cómo transferir sin errores?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div id="inst-usa" class="instruction-content">
+                        <ol>
+                            <li>Ve a tu banco y selecciona <strong>Transferencia ACH</strong> (No Wire).</li>
+                            <li>En tipo de cuenta selecciona: <strong>Checking</strong> (Corriente).</li>
+                            <li>Ingresa el <strong>Routing Number</strong> y <strong>Account Number</strong> copiados arriba.</li>
+                            <li>Si te pide dirección, usa la de Lead Bank (Kansas City, MO).</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
 
-1. Ve a "Pay & Transfer" > "Transfer" > "Schedule transfer".
-2. Toca "Add an external account".
-3. Usa mis datos:
-   - Banco: Lead Bank
-   - Ruta: 101019644
-   - Cuenta: 211152102631
-   - Tipo: Checking
-4. Chase enviará 2 depósitos pequeños de prueba. Avísame cuando lleguen para verificarlos.
-
-Una vez verificada, ¡el envío es GRATIS!</div>
-            <button class="btn-action btn-copy" onclick="copyToClipboard('script-chase')">Copiar Guion Chase</button>
-            <button class="btn-action btn-back" onclick="showMenu()">Volver</button>
+            <div class="card" style="border-left-color: #5b2c6f;">
+                <div class="card-header">
+                    <h3><i class="fas fa-globe-americas" style="color: #5b2c6f;"></i> Zinli / Panamá</h3>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Cuenta ACH</span>
+                        <span class="data-value" id="zinli-ach">3-002-53219400-87</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('zinli-ach')"><i class="far fa-copy"></i></button>
+                </div>
+                 <div class="instruction-box">
+                    <div class="instruction-header" onclick="toggleInstruction('inst-zinli')">
+                        <span><i class="fas fa-info-circle"></i> Datos de Transferencia</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div id="inst-zinli" class="instruction-content">
+                        <p><strong>Banco Destino:</strong> Towerbank (Generalmente)</p>
+                        <p><strong>Tipo:</strong> Transferencia Local / ACH Panamá.</p>
+                        <p>Asegúrate de colocar el número de cuenta exacto.</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div id="boa" class="content-section">
-            <h3 style="color:var(--primary-color)">Guía Bank of America</h3>
-            <div class="script-box" id="script-boa">Hola! Agrégame para transferencias directas (Sin costo Zelle):
-
-1. En la App ve a "Transfer | Send".
-2. Selecciona "To/from other banks (includes wires)".
-3. Elige "Add Account/Recipient".
-4. Ingresa mis datos:
-   - Banco: Lead Bank
-   - Ruta: 101019644
-   - Cuenta: 211152102631 (Checking)
-5. BoA te pedirá un código "SafePass" para confirmar.
-
-¡Listo! Si envías antes de las 8PM suele salir el mismo día.</div>
-            <button class="btn-action btn-copy" onclick="copyToClipboard('script-boa')">Copiar Guion BoA</button>
-            <button class="btn-action btn-back" onclick="showMenu()">Volver</button>
+        <div id="cripto" class="tab-content hidden">
+            <div class="card" style="border-left-color: #F3BA2F; background: #fffcf0;">
+                <div class="card-header">
+                    <h3><i class="fab fa-bitcoin" style="color: #F3BA2F;"></i> Binance Pay (USDT)</h3>
+                </div>
+                <div class="data-row">
+                    <div>
+                        <span class="data-label">Correo / Binance ID</span>
+                        <span class="data-value" id="binance-email">dovatsug27@gmail.com</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('binance-email')"><i class="far fa-copy"></i></button>
+                </div>
+                
+                <div style="margin-top: 15px; font-size: 0.85rem; color: #666;">
+                    <p><i class="fas fa-check-circle" style="color: green;"></i> <strong>Sin comisión:</strong> De Binance a Binance.</p>
+                    <p class="warning-text"><i class="fas fa-exclamation-triangle"></i> Nota: Retiros en efectivo generan una pequeña comisión de servicio.</p>
+                </div>
+            </div>
         </div>
 
-        <div id="wells" class="content-section">
-            <h3 style="color:var(--primary-color)">Guía Wells Fargo</h3>
-            <div class="script-box" id="script-wells">Hola! Para enviarme directo desde Wells Fargo:
-
-1. Ve a "Transfer & Pay".
-2. Selecciona "Add Non-Wells Fargo Account".
-3. Ingresa mis datos:
-   - Ruta: 101019644
-   - Cuenta: 211152102631
-   - Tipo: Checking
-4. Te pedirá confirmar tu identidad.
-
-Una vez agregada, solo dale a "Transfer" y búscame en la lista. Es más seguro que Zelle.</div>
-            <button class="btn-action btn-copy" onclick="copyToClipboard('script-wells')">Copiar Guion Wells</button>
-            <button class="btn-action btn-back" onclick="showMenu()">Volver</button>
-        </div>
+        <p style="text-align: center; color: #aaa; font-size: 0.8rem; margin-top: 30px;">
+            Dovatsug Global © 2026. Todos los derechos reservados.<br>
+            <i class="fas fa-lock"></i> Transacciones Seguras
+        </p>
 
     </div>
 
-    <a href="https://wa.me/584124285616?text=Hola%20David,%20tengo%20una%20duda%20con%20el%20pago" class="whatsapp-float" target="_blank">
-        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-    </a>
-
     <script>
-        function showSection(id) {
-            document.getElementById('main-menu').style.display = 'none';
-            var sections = document.getElementsByClassName('content-section');
-            for (var i = 0; i < sections.length; i++) {
-                sections[i].style.display = 'none';
+        // Splash Screen Logic
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var splash = document.getElementById('splash');
+                splash.style.opacity = '0';
+                setTimeout(function() {
+                    splash.style.display = 'none';
+                }, 500);
+            }, 1500); // 1.5 segundos de carga
+        });
+
+        // Tab Switching Logic
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
             }
-            document.getElementById(id).style.display = 'block';
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
         }
 
-        function showMenu() {
-            var sections = document.getElementsByClassName('content-section');
-            for (var i = 0; i < sections.length; i++) {
-                sections[i].style.display = 'none';
+        // Accordion Logic
+        function toggleInstruction(id) {
+            var x = document.getElementById(id);
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
             }
-            document.getElementById('main-menu').style.display = 'block';
         }
 
+        // Copy to Clipboard Logic
         function copyToClipboard(elementId) {
             var copyText = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(copyText).then(function() {
-                alert("¡Guion copiado! Listo para WhatsApp.");
-            });
-        }
-
-        function copyData() {
-            var text = "Banco: Lead Bank\nRuta: 101019644\nCuenta: 211152102631\nNombre: David Rodríguez\nTipo: Checking";
-            navigator.clipboard.writeText(text).then(function() {
-                alert("¡Datos Bancarios Copiados!");
-            });
+            
+            // Crea un elemento temporal
+            var tempInput = document.createElement("textarea");
+            tempInput.value = copyText;
+            document.body.appendChild(tempInput);
+            
+            // Selecciona y copia
+            tempInput.select();
+            document.execCommand("copy");
+            
+            // Remueve el elemento temporal
+            document.body.removeChild(tempInput);
+            
+            // Muestra el Toast
+            var toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
         }
     </script>
+
 </body>
 </html>
