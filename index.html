@@ -7,199 +7,44 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #0044cc; /* Azul del Logo */
-            --secondary: #002a80;
-            --accent: #25d366; /* Verde WhatsApp */
-            --bg: #f4f6f8;
-            --text: #333;
-            --white: #ffffff;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 0;
-            padding-bottom: 80px; /* Espacio para el botón de WhatsApp */
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* HEADER CON LOGO */
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,68,204,0.2);
-        }
-        .logo-img {
-            width: 120px;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            background: white;
-            padding: 5px;
-        }
-        header h1 { margin: 0; font-size: 1.5rem; font-weight: 600; }
-        header p { margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9; }
-
-        /* TABS DE NAVEGACIÓN */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: -25px;
-            padding: 0 15px;
-            overflow-x: auto;
-        }
-        .tab-btn {
-            background: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            color: #666;
-            font-weight: 600;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-        .tab-btn.active {
-            background: var(--secondary);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,42,128,0.2);
-        }
-
-        /* CONTENEDOR */
-        .container { max-width: 600px; margin: 20px auto; padding: 0 20px; }
-
-        /* TARJETAS */
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            border-left: 5px solid var(--primary);
-            animation: fadeIn 0.5s ease;
-        }
+        :root { --primary: #0044cc; --secondary: #002a80; --accent: #25d366; --bg: #f4f6f8; --text: #333; --paypal: #003087; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding-bottom: 90px; }
         
-        .card-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            color: var(--primary);
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        /* DATOS Y COPIAR */
-        .data-group {
-            margin-bottom: 15px;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 12px;
-            position: relative;
-            border: 1px solid #eee;
-        }
-        .label { display: block; font-size: 0.75rem; color: #888; text-transform: uppercase; margin-bottom: 4px; }
-        .value { font-size: 1rem; color: #333; font-weight: 600; word-break: break-word; padding-right: 30px;}
+        /* HEADER */
+        header { background: var(--primary); color: white; padding: 30px 20px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
+        .logo-img { width: 100px; height: auto; border-radius: 12px; background: white; padding: 5px; margin-bottom: 10px; }
         
-        .copy-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary);
-            cursor: pointer;
-            font-size: 1.2rem;
-            padding: 10px; /* Área táctil más grande */
-        }
-        .copy-icon:active { color: var(--secondary); transform: translateY(-50%) scale(0.9); }
+        /* TABS CORREGIDAS (Para que no se corten) */
+        .tabs-container { position: sticky; top: 0; z-index: 100; background: var(--bg); padding-top: 10px; }
+        .tabs { display: flex; overflow-x: auto; gap: 10px; padding: 10px 15px 20px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab-btn { background: white; border: none; padding: 10px 18px; border-radius: 20px; font-size: 0.85rem; color: #666; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+        .tab-btn.active { background: var(--secondary); color: white; }
 
-        /* INSTRUCTIVOS (ACORDEÓN) */
-        .guide-btn {
-            background: #eef2f7;
-            color: var(--primary);
-            width: 100%;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            text-align: left;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-        .guide-content {
-            display: none;
-            padding: 15px;
-            background: #fff;
-            border: 1px solid #eef2f7;
-            border-radius: 0 0 10px 10px;
-            font-size: 0.9rem;
-            color: #555;
-        }
-        .guide-content ol { padding-left: 20px; margin: 0; }
-        .guide-content li { margin-bottom: 8px; }
+        /* CONTENIDO */
+        .container { max-width: 600px; margin: auto; padding: 0 15px; }
+        .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border-left: 5px solid var(--primary); animation: fadeIn 0.4s; }
+        .card-title { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: var(--primary); font-weight: 600; }
+        
+        /* DATOS */
+        .data-group { background: #f8f9fa; padding: 12px; border-radius: 12px; position: relative; margin-bottom: 10px; border: 1px solid #eee; }
+        .label { display: block; font-size: 0.7rem; color: #888; text-transform: uppercase; }
+        .value { font-size: 0.95rem; font-weight: 600; color: #333; padding-right: 35px; word-break: break-all; }
+        .copy-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--primary); cursor: pointer; padding: 5px; }
 
-        /* BOTÓN FLOTANTE WHATSAPP */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--accent);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            z-index: 1000;
-            transition: transform 0.3s;
-        }
-        .whatsapp-float:hover { transform: scale(1.1); }
+        /* INSTRUCTIVOS */
+        .guide-btn { background: #eef2f7; color: var(--primary); width: 100%; border: none; padding: 10px; border-radius: 8px; text-align: left; font-weight: 600; font-size: 0.85rem; margin-top: 8px; display: flex; justify-content: space-between; }
+        .guide-content { display: none; padding: 12px; font-size: 0.8rem; color: #555; background: #fff; border: 1px solid #eee; }
 
-        /* NOTIFICACIÓN (TOAST) */
-        #toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 50px;
-            padding: 16px;
-            position: fixed;
-            z-index: 1001;
-            left: 50%;
-            bottom: 90px;
-            transform: translateX(-50%);
-            font-size: 14px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
+        /* WHATSAPP & TOAST */
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000; text-decoration: none; }
+        #toast { visibility: hidden; background: #333; color: #fff; text-align: center; border-radius: 50px; padding: 12px 25px; position: fixed; left: 50%; bottom: 85px; transform: translateX(-50%); z-index: 1001; font-size: 14px; }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 90px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 90px; opacity: 1;} to {bottom: 0; opacity: 0;} }
-
-        /* UTILIDADES */
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 85px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 85px; opacity: 1;} to {bottom: 0; opacity: 0;} }
         .hidden { display: none; }
-        .bank-logo { width: 20px; height: 20px; margin-right: 5px; vertical-align: middle; }
     </style>
 </head>
 <body>
@@ -207,14 +52,17 @@
     <header>
         <img src="logo.png" alt="Cambios Dovatsug" class="logo-img" onerror="this.style.display='none'"> 
         <h1>Cambios Dovatsug</h1>
-        <p>Diversidad en Plataformas</p>
+        <p>Tu puente financiero global</p>
     </header>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="openTab('colombia', this)">🇨🇴 Colombia</button>
-        <button class="tab-btn" onclick="openTab('venezuela', this)">🇻🇪 Venezuela</button>
-        <button class="tab-btn" onclick="openTab('usa', this)">🇺🇸 USA / Int.</button>
-        <button class="tab-btn" onclick="openTab('cripto', this)">🪙 Cripto</button>
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('colombia', this)">🇨🇴 Colombia</button>
+            <button class="tab-btn" onclick="openTab('venezuela', this)">🇻🇪 Venezuela</button>
+            <button class="tab-btn" onclick="openTab('usa', this)">🇺🇸 USA / Int.</button>
+            <button class="tab-btn" onclick="openTab('europa', this)">🇪🇺 Europa</button>
+            <button class="tab-btn" onclick="openTab('cripto', this)">🪙 Cripto / PayPal</button>
+        </div>
     </div>
 
     <div class="container">
@@ -222,7 +70,6 @@
         <div id="colombia" class="tab-content">
             <div class="card" style="border-left-color: #820ad1;">
                 <div class="card-title"><i class="fas fa-university" style="color: #820ad1;"></i> NuBank</div>
-                
                 <div class="data-group">
                     <span class="label">Número de Cuenta</span>
                     <span class="value" id="nu-acc">96490256</span>
@@ -234,38 +81,24 @@
                     <i class="far fa-copy copy-icon" onclick="copy('nu-name')"></i>
                 </div>
                 <div class="data-group">
-                    <span class="label">Documento / PTP</span>
+                    <span class="label">PTP / ID</span>
                     <span class="value" id="nu-id">782079</span>
                     <i class="far fa-copy copy-icon" onclick="copy('nu-id')"></i>
                 </div>
-                <div class="data-group">
-                    <span class="label">Tipo de Cuenta</span>
-                    <span class="value">Ahorros</span>
-                </div>
             </div>
-
             <div class="card" style="border-left-color: #FDDA24;">
                 <div class="card-title"><i class="fas fa-landmark" style="color: #FDDA24;"></i> Bancolombia</div>
                 <div class="data-group">
-                    <span class="label">Cuenta de Ahorros</span>
+                    <span class="label">Cuenta Ahorros</span>
                     <span class="value" id="ban-acc">824-000084-87</span>
                     <i class="far fa-copy copy-icon" onclick="copy('ban-acc')"></i>
-                </div>
-                <div class="data-group">
-                    <span class="label">Titular</span>
-                    <span class="value">David Rodriguez</span>
                 </div>
             </div>
         </div>
 
         <div id="venezuela" class="tab-content hidden">
             <div class="card" style="border-left-color: #bd0f0f;">
-                <div class="card-title"><i class="fas fa-mobile-alt" style="color: #bd0f0f;"></i> Pago Móvil</div>
-                
-                <div class="data-group">
-                    <span class="label">Banco</span>
-                    <span class="value">Banco de Venezuela (0102)</span>
-                </div>
+                <div class="card-title"><i class="fas fa-mobile-alt" style="color: #bd0f0f;"></i> Pago Móvil BDV</div>
                 <div class="data-group">
                     <span class="label">Teléfono</span>
                     <span class="value" id="pm-tel">04124285616</span>
@@ -277,105 +110,57 @@
                     <i class="far fa-copy copy-icon" onclick="copy('pm-ci')"></i>
                 </div>
             </div>
-
-            <div class="card">
-                <div class="card-title"><i class="fas fa-money-check"></i> Cuenta Corriente</div>
-                <div class="data-group">
-                    <span class="label">Número de Cuenta</span>
-                    <span class="value" id="bdv-acc">01020380560000026000</span>
-                    <i class="far fa-copy copy-icon" onclick="copy('bdv-acc')"></i>
-                </div>
-                <div class="data-group">
-                    <span class="label">Titular</span>
-                    <span class="value">David Rodriguez</span>
-                </div>
-            </div>
         </div>
 
         <div id="usa" class="tab-content hidden">
-            
             <div class="card" style="border-left-color: #00d2ff;">
                 <div class="card-title"><i class="fas fa-flag-usa" style="color: #00d2ff;"></i> USA (ACH)</div>
-                <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">Para transferencias desde cuentas americanas.</p>
-                
+                <div class="data-group"><span class="label">Banco</span><span class="value">Lead Bank</span></div>
                 <div class="data-group">
-                    <span class="label">Banco</span>
-                    <span class="value">Lead Bank</span>
-                </div>
-                <div class="data-group">
-                    <span class="label">Routing Number (Ruta)</span>
+                    <span class="label">Routing Number</span>
                     <span class="value" id="usa-rout">101019644</span>
                     <i class="far fa-copy copy-icon" onclick="copy('usa-rout')"></i>
                 </div>
                 <div class="data-group">
-                    <span class="label">Account Number (Cuenta)</span>
+                    <span class="label">Account Number</span>
                     <span class="value" id="usa-acc">211152102631</span>
                     <i class="far fa-copy copy-icon" onclick="copy('usa-acc')"></i>
                 </div>
-                <div class="data-group">
-                    <span class="label">Tipo de Cuenta</span>
-                    <span class="value">Checking (Corriente)</span>
-                </div>
-
-                <h4 style="margin-top: 20px; color: var(--primary);">¿Cómo transferir?</h4>
+                <div class="data-group"><span class="label">Tipo</span><span class="value">Checking (Corriente)</span></div>
                 
-                <button class="guide-btn" onclick="toggleGuide('guide-chase')">🏦 Chase Bank <i class="fas fa-chevron-down"></i></button>
-                <div id="guide-chase" class="guide-content">
-                    <ol>
-                        <li>Abre la App de Chase y ve a <strong>"Pay & Transfer"</strong>.</li>
-                        <li>Selecciona <strong>"Transfer to/from other banks"</strong>.</li>
-                        <li>Elige <strong>"Add external account"</strong>.</li>
-                        <li>Ingresa manualmente el <strong>Routing</strong> y <strong>Account Number</strong> de arriba.</li>
-                        <li>Chase enviará 2 micro-depósitos para verificar (puede tardar 1 día) o usará verificación instantánea.</li>
-                    </ol>
-                </div>
-
-                <button class="guide-btn" onclick="toggleGuide('guide-boa')">🏦 Bank of America <i class="fas fa-chevron-down"></i></button>
-                <div id="guide-boa" class="guide-content">
-                    <ol>
-                        <li>En la App, ve a <strong>"Transfer | Zelle"</strong>.</li>
-                        <li>Selecciona <strong>"To/from other banks (includes wires)"</strong>.</li>
-                        <li>Toca en <strong>"Add Account/Recipient"</strong>.</li>
-                        <li>Selecciona "Domestic (U.S.)" y coloca los datos de Lead Bank.</li>
-                        <li>Tip: Si pide dirección, usa la de Lead Bank (Kansas City, MO).</li>
-                    </ol>
-                </div>
-
-                <button class="guide-btn" onclick="toggleGuide('guide-wells')">🏦 Wells Fargo <i class="fas fa-chevron-down"></i></button>
-                <div id="guide-wells" class="guide-content">
-                    <ol>
-                        <li>Ve al menú <strong>"Transfer & Pay"</strong>.</li>
-                        <li>Selecciona <strong>"Add Non-Wells Fargo Accounts"</strong>.</li>
-                        <li>Marca la casilla "I want to add a checking account".</li>
-                        <li>Ingresa el Routing y Número de cuenta copiados arriba.</li>
-                    </ol>
+                <button class="guide-btn" onclick="toggleGuide('g-usa')">Guías Chase, BoA, Wells Fargo <i class="fas fa-chevron-down"></i></button>
+                <div id="g-usa" class="guide-content">
+                    1. Selecciona Transferencia ACH (No Wire).<br>
+                    2. Agrega la cuenta como "External Account".<br>
+                    3. Verifica con micro-depósitos si es necesario.
                 </div>
             </div>
 
             <div class="card" style="border-left-color: #5b2c6f;">
                 <div class="card-title"><i class="fas fa-globe-americas" style="color: #5b2c6f;"></i> Zinli / Panamá</div>
-                
                 <div class="data-group">
-                    <span class="label">Correo Zinli (Opción rápida)</span>
-                    <span class="value" id="zinli-mail">dovatsug27@gmail.com</span>
-                    <i class="far fa-copy copy-icon" onclick="copy('zinli-mail')"></i>
+                    <span class="label">Correo Zinli</span>
+                    <span class="value" id="z-mail">dovatsug27@gmail.com</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('z-mail')"></i>
                 </div>
+                <div class="data-group">
+                    <span class="label">Cuenta ACH</span>
+                    <span class="value" id="z-ach">3-002-53219400-87</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('z-ach')"></i>
+                </div>
+            </div>
+        </div>
 
-                <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
-
+        <div id="europa" class="tab-content hidden">
+            <div class="card" style="border-left-color: #003399;">
+                <div class="card-title"><i class="fas fa-euro-sign" style="color: #003399;"></i> Europa (SEPA)</div>
                 <div class="data-group">
-                    <span class="label">Cuenta ACH (Bancos Panamá)</span>
-                    <span class="value" id="zinli-ach">3-002-53219400-87</span>
-                    <i class="far fa-copy copy-icon" onclick="copy('zinli-ach')"></i>
+                    <span class="label">IBAN (Luxemburgo)</span>
+                    <span class="value" id="eu-iban">SOLICITAR_POR_WHATSAPP</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('eu-iban')"></i>
                 </div>
-                <div class="data-group">
-                    <span class="label">Tipo de Cuenta</span>
-                    <span class="value">Ahorros</span>
-                </div>
-                <div class="data-group">
-                    <span class="label">Banco Destino</span>
-                    <span class="value">Zinli (Towerbank)</span>
-                </div>
+                <div class="data-group"><span class="label">Banco Beneficiario</span><span class="value">DolarApp (Luxembourg)</span></div>
+                <p style="font-size: 0.75rem; color: #666;">* Las transferencias SEPA suelen tardar de 1 a 2 días hábiles.</p>
             </div>
         </div>
 
@@ -383,58 +168,49 @@
             <div class="card" style="border-left-color: #F3BA2F; background: #fffcf0;">
                 <div class="card-title"><i class="fab fa-bitcoin" style="color: #F3BA2F;"></i> Binance Pay (USDT)</div>
                 <div class="data-group">
-                    <span class="label">Correo / ID</span>
-                    <span class="value" id="bin-mail">dovatsug27@gmail.com</span>
-                    <i class="far fa-copy copy-icon" onclick="copy('bin-mail')"></i>
+                    <span class="label">Email / Binance ID</span>
+                    <span class="value" id="bin-m">dovatsug27@gmail.com</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('bin-m')"></i>
                 </div>
-                <p style="font-size: 0.8rem; color: #d93025; font-weight: 600; margin-top: 10px;">
-                    <i class="fas fa-exclamation-triangle"></i> Recuerda: Retiros en efectivo pueden generar comisión.
-                </p>
+            </div>
+
+            <div class="card" style="border-left-color: var(--paypal);">
+                <div class="card-title"><i class="fab fa-paypal" style="color: var(--paypal);"></i> PayPal</div>
+                <div class="data-group">
+                    <span class="label">Correo PayPal</span>
+                    <span class="value" id="pp-mail">dovatsug27@gmail.com</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('pp-mail')"></i>
+                </div>
+                <p style="font-size: 0.75rem; color: #d93025; font-weight: bold;">⚠️ Nota: PayPal debe enviarse como "Servicios" y se liquida al liberar los fondos.</p>
             </div>
         </div>
 
     </div>
 
-    <div id="toast"><i class="fas fa-check-circle"></i> ¡Copiado al portapapeles!</div>
-
+    <div id="toast">¡Dato copiado con éxito!</div>
     <a href="https://wa.me/584124285616?text=Hola%20Cambios%20Dovatsug,%20quiero%20realizar%20un%20cambio." class="whatsapp-float" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
 
     <script>
         function openTab(tabName, btn) {
-            var i;
-            var x = document.getElementsByClassName("tab-content");
-            var tabs = document.getElementsByClassName("tab-btn");
-            
-            for (i = 0; i < x.length; i++) {
-                x[i].style.display = "none";
-            }
-            for (i = 0; i < tabs.length; i++) {
-                tabs[i].classList.remove("active");
-            }
-            
+            let i, x = document.getElementsByClassName("tab-content"), tabs = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < x.length; i++) x[i].style.display = "none";
+            for (i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
             document.getElementById(tabName).style.display = "block";
             btn.classList.add("active");
+            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
-
         function toggleGuide(id) {
-            var x = document.getElementById(id);
-            if (x.style.display === "block") {
-                x.style.display = "none";
-            } else {
-                x.style.display = "block";
-            }
+            let x = document.getElementById(id);
+            x.style.display = (x.style.display === "block") ? "none" : "block";
         }
-
         function copy(id) {
-            var text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text).then(function() {
-                var x = document.getElementById("toast");
-                x.className = "show";
-                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-            }, function(err) {
-                console.error('Error al copiar: ', err);
+            let text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                let t = document.getElementById("toast");
+                t.className = "show";
+                setTimeout(() => { t.className = ""; }, 3000);
             });
         }
     </script>
