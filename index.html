@@ -160,4 +160,123 @@
                     <span class="label">Banco</span>
                     <span class="value">Lead Bank</span>
                 </div>
-                <div class="data
+                <div class="data-group">
+                    <span class="label">Routing Number</span>
+                    <span class="value" id="usa-rout">101019644</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('usa-rout')"></i>
+                </div>
+                <div class="data-group">
+                    <span class="label">Account Number</span>
+                    <span class="value" id="usa-acc">211152102631</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('usa-acc')"></i>
+                </div>
+                
+                <h4 style="margin-top: 20px; color: var(--primary); font-size: 0.9rem;">¿Cómo transferir sin errores?</h4>
+                
+                <button class="guide-btn" onclick="toggleGuide('guide-chase')">🏦 Chase Bank <i class="fas fa-chevron-down"></i></button>
+                <div id="guide-chase" class="guide-content">
+                    <ol>
+                        <li>Abre la App de Chase y ve a <strong>"Pay & Transfer"</strong>.</li>
+                        <li>Selecciona <strong>"Transfer to/from other banks"</strong>.</li>
+                        <li>Elige <strong>"Add external account"</strong> e ingresa los datos de arriba.</li>
+                    </ol>
+                </div>
+
+                <button class="guide-btn" onclick="toggleGuide('guide-boa')">🏦 Bank of America <i class="fas fa-chevron-down"></i></button>
+                <div id="guide-boa" class="guide-content">
+                    <ol>
+                        <li>En la App, ve a <strong>"Transfer | Zelle"</strong>.</li>
+                        <li>Selecciona <strong>"To/from other banks"</strong>.</li>
+                        <li>Agrega los datos de Lead Bank.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color: #5b2c6f;">
+                <div class="card-title"><i class="fas fa-globe-americas" style="color: #5b2c6f;"></i> Zinli / Panamá</div>
+                <div class="data-group">
+                    <span class="label">Correo Zinli (Rápido)</span>
+                    <span class="value" id="z-mail">dovatsug27@gmail.com</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('z-mail')"></i>
+                </div>
+                <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
+                <div class="data-group">
+                    <span class="label">Cuenta ACH Panamá</span>
+                    <span class="value" id="z-ach">3-002-53219400-87</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('z-ach')"></i>
+                </div>
+            </div>
+        </div>
+
+        <div id="europa" class="tab-content hidden">
+            <div class="card" style="border-left-color: #003399;">
+                <div class="card-title"><i class="fas fa-euro-sign" style="color: #003399;"></i> Europa (SEPA)</div>
+                <div class="data-group">
+                    <span class="label">Beneficiario / Nombre</span>
+                    <span class="value" id="eu-name">Bridge Building Sp. Z.o.o.</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('eu-name')"></i>
+                </div>
+                <div class="data-group">
+                    <span class="label">IBAN</span>
+                    <span class="value" id="eu-iban" style="font-size: 0.85rem;">LU224080000046455166</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('eu-iban')"></i>
+                </div>
+                <div class="data-group">
+                    <span class="label">País</span>
+                    <span class="value">Luxemburgo</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="cripto" class="tab-content hidden">
+            <div class="card" style="border-left-color: #F3BA2F; background: #fffcf0;">
+                <div class="card-title"><i class="fab fa-bitcoin" style="color: #F3BA2F;"></i> Binance Pay (USDT)</div>
+                <div class="data-group">
+                    <span class="label">Email / Binance ID</span>
+                    <span class="value" id="bin-m">dovatsug27@gmail.com</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('bin-m')"></i>
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color: var(--paypal);">
+                <div class="card-title"><i class="fab fa-paypal" style="color: var(--paypal);"></i> PayPal</div>
+                <div class="data-group">
+                    <span class="label">Correo PayPal</span>
+                    <span class="value" id="pp-mail">dovatsug27@gmail.com</span>
+                    <i class="far fa-copy copy-icon" onclick="copy('pp-mail')"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast"><i class="fas fa-check-circle"></i> ¡Copiado con éxito!</div>
+    
+    <a href="https://wa.me/584124285616?text=Hola%20David,%20ya%20realice%20mi%20pago." class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        function openTab(tabName, btn) {
+            let i, x = document.getElementsByClassName("tab-content"), tabs = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < x.length; i++) x[i].style.display = "none";
+            for (i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
+            document.getElementById(tabName).style.display = "block";
+            btn.classList.add("active");
+            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+        function toggleGuide(id) {
+            let x = document.getElementById(id);
+            x.style.display = (x.style.display === "block") ? "none" : "block";
+        }
+        function copy(id) {
+            let text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                let t = document.getElementById("toast");
+                t.className = "show";
+                setTimeout(() => { t.className = ""; }, 3000);
+            });
+        }
+    </script>
+</body>
+</html>
