@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #0044cc; --secondary: #002a80; --accent: #25d366; --bg: #f4f6f8; --text: #333; --bold-red: #E63946; }
+        :root { --primary: #0044cc; --secondary: #002a80; --accent: #25d366; --bg: #f4f6f8; --text: #333; --paypal: #003087; --bold-red: #E63946; }
         body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding-bottom: 90px; }
         
         /* HEADER */
@@ -26,7 +26,7 @@
         .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border-left: 5px solid var(--primary); animation: fadeIn 0.4s; }
         .card-title { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: var(--primary); font-weight: 600; font-size: 1.1rem;}
         
-        /* ESTILOS ESPECÍFICOS QR BOLD */
+        /* ESTILOS QR BOLD */
         .qr-container { text-align: center; padding: 10px 0; }
         .qr-img { width: 220px; border: 2px solid #eee; border-radius: 15px; margin-bottom: 15px; }
         .btn-bold { background: var(--bold-red); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; margin-bottom: 15px; transition: 0.3s; }
@@ -45,11 +45,14 @@
         .guide-content li { margin-bottom: 8px; }
 
         /* WHATSAPP & TOAST */
-        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); z-index: 1000; text-decoration: none; }
-        #toast { visibility: hidden; background: #333; color: #fff; text-align: center; border-radius: 50px; padding: 12px 25px; position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); z-index: 1001; font-size: 14px; }
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); z-index: 1000; text-decoration: none; transition: transform 0.3s; }
+        .whatsapp-float:active { transform: scale(0.9); }
+        #toast { visibility: hidden; background: #333; color: #fff; text-align: center; border-radius: 50px; padding: 12px 25px; position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); z-index: 1001; font-size: 14px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 90px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 90px; opacity: 1;} to {bottom: 0; opacity: 0;} }
         .hidden { display: none; }
     </style>
 </head>
@@ -90,9 +93,9 @@
                 <div id="guide-nequi" class="guide-content">
                     <ol>
                         <li>Toca el botón <b>Descargar QR</b> arriba.</li>
-                        <li>Abre tu App Nequi y toca el icono <b>QR</b> (escanear).</li>
-                        <li>Selecciona el icono de <b>Galería/Imagen</b> y elige el QR descargado.</li>
-                        <li>Ingresa el monto a transferir y confirma.</li>
+                        <li>Abre tu App Nequi y toca el icono <b>QR</b>.</li>
+                        <li>Selecciona el icono de <b>Imagen/Galería</b> y elige el QR descargado.</li>
+                        <li>Ingresa el monto y confirma.</li>
                     </ol>
                 </div>
 
@@ -100,9 +103,9 @@
                 <div id="guide-bancolombia" class="guide-content">
                     <ol>
                         <li>Descarga la imagen del QR en tu celular.</li>
-                        <li>En tu App Bancolombia, busca la opción <b>Escanear QR</b>.</li>
+                        <li>En tu App Bancolombia, busca <b>Escanear QR</b>.</li>
                         <li>Toca el icono de la <b>Galería</b> para cargar el QR.</li>
-                        <li>Digita el monto y confirma la transferencia.</li>
+                        <li>Digita el monto y confirma.</li>
                     </ol>
                 </div>
                 
@@ -154,91 +157,7 @@
             <div class="card" style="border-left-color: #00d2ff;">
                 <div class="card-title"><i class="fas fa-flag-usa" style="color: #00d2ff;"></i> USA (ACH)</div>
                 <div class="data-group">
-                    <span class="label">Routing Number</span>
-                    <span class="value" id="usa-rout">101019644</span>
-                    <i class="far fa-copy copy-icon" onclick="copy('usa-rout')"></i>
+                    <span class="label">Banco</span>
+                    <span class="value">Lead Bank</span>
                 </div>
-                <div class="data-group">
-                    <span class="label">Account Number</span>
-                    <span class="value" id="usa-acc">211152102631</span>
-                    <i class="far fa-copy copy-icon" onclick="copy('usa-acc')"></i>
-                </div>
-                
-                <button class="guide-btn" onclick="toggleGuide('guide-chase')">🏦 Chase Bank <i class="fas fa-chevron-down"></i></button>
-                <div id="guide-chase" class="guide-content">
-                    <ol>
-                        <li>Abre Pay & Transfer > Transfer to other banks.</li>
-                        <li>Add external account con los datos de arriba.</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-
-        <div id="europa" class="tab-content hidden">
-            <div class="card" style="border-left-color: #003399;">
-                <div class="card-title"><i class="fas fa-euro-sign" style="color: #003399;"></i> Europa (SEPA)</div>
-                <div class="data-group">
-                    <span class="label">Beneficiario</span>
-                    <span class="value" id="eu-name">Bridge Building Sp. Z.o.o.</span>
-                    <i class="far fa-copy copy-icon" onclick="copy('eu-name')"></i>
-                </div>
-                <div class="data-group">
-                    <span class="label">IBAN</span>
-                    <span class="value" id="eu-iban" style="font-size: 0.85rem;">LU224080000046455166</span>
-                    <i class="far fa-copy copy-icon" onclick="copy('eu-iban')"></i>
-                </div>
-            </div>
-        </div>
-
-        <div id="cripto" class="tab-content hidden">
-            <div class="card" style="border-left-color: #F3BA2F;">
-                <div class="card-title"><i class="fab fa-bitcoin" style="color: #F3BA2F;"></i> Binance Pay (USDT)</div>
-                <div class="data-group">
-                    <span class="label">Email / Binance ID</span>
-                    <span class="value" id="bin-m">dovatsug27@gmail.com</span>
-                    <i class="far fa-copy copy-icon" onclick="copy('bin-m')"></i>
-                </div>
-            </div>
-
-            <div class="card" style="border-left-color: #003087;">
-                <div class="card-title"><i class="fab fa-paypal" style="color: #003087;"></i> PayPal</div>
-                <div class="data-group">
-                    <span class="label">Correo PayPal</span>
-                    <span class="value" id="pp-mail">dovatsug27@gmail.com</span>
-                    <i class="far fa-copy copy-icon" onclick="copy('pp-mail')"></i>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div id="toast"><i class="fas fa-check-circle"></i> ¡Copiado con éxito!</div>
-    
-    <a href="https://wa.me/584124285616?text=Hola%20David,%20ya%20realice%20mi%20pago." class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <script>
-        function openTab(tabName, btn) {
-            let i, x = document.getElementsByClassName("tab-content"), tabs = document.getElementsByClassName("tab-btn");
-            for (i = 0; i < x.length; i++) { x[i].style.display = "none"; }
-            for (i = 0; i < tabs.length; i++) { tabs[i].classList.remove("active"); }
-            document.getElementById(tabName).style.display = "block";
-            btn.classList.add("active");
-            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
-        function toggleGuide(id) {
-            let x = document.getElementById(id);
-            x.style.display = (x.style.display === "block") ? "none" : "block";
-        }
-        function copy(id) {
-            let text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                let t = document.getElementById("toast");
-                t.className = "show";
-                setTimeout(() => { t.className = ""; }, 3000);
-            });
-        }
-    </script>
-</body>
-</html>
+                <div class="data
